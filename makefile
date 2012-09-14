@@ -19,14 +19,14 @@
 OBJS = find_pi.o real_number.o convergent_series.o array_arithmetic.o
 OBJSTEST_ARITH = array_arithmetic_test.o array_arithmetic.o
 CC = g++
-CPPFLAGSTEST = -c -I/usr/local/boost_1_49_0
+CPPFLAGS = -I include
+CPPFLAGSTEST = $(CPPFLAGS) -I/usr/local/boost_1_49_0
 LFLAGSTEST = -L/Users/marshallfarrier/boost_1_49_0 -lboost_unit_test_framework
 
-# TODO: This part isn't working so reverting for the moment to flat structure
 # Use desired directory structure
 # Cf. Mecklenburg, p. 20
-#vpath %.cpp src
-#vpath %.h include
+vpath %.cpp src tst
+vpath %.h include
 
 # Link commands:
 # Cf. Mecklenburg, pp. 13ff.
@@ -44,22 +44,22 @@ array_arithmetic_test: array_arithmetic_test.o array_arithmetic.o
 
 # Compile commands:
 find_pi.o: find_pi.cpp real_number.h convergent_series.h array_arithmetic.h
-	$(CC) -c $<
+	$(CC) $(CPPFLAGS) -c $<
 
 real_number.o: real_number.cpp real_number.h array_arithmetic.h
-	$(CC) -c $<
+	$(CC) $(CPPFLAGS) -c $<
 
 real_number_test.o: real_number_test.cpp
-	$(CC) $(CPPFLAGSTEST) $<
+	$(CC) $(CPPFLAGSTEST) -c $<
 
 convergent_series.o: convergent_series.cpp convergent_series.h real_number.h
-	$(CC) -c $<
+	$(CC) $(CPPFLAGS) -c $<
 
 array_arithmetic.o: array_arithmetic.cpp array_arithmetic.h
-	$(CC) -c $<
+	$(CC) $(CPPFLAGS) -c $<
 
 array_arithmetic_test.o: array_arithmetic_test.cpp
-	$(CC) $(CPPFLAGSTEST) array_arithmetic_test.cpp 
+	$(CC) $(CPPFLAGSTEST) -c $<
 
 .PHONY: clean
 clean:
